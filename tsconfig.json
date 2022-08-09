@@ -1,6 +1,13 @@
 {
-    "compilerOptions": {
-        "module": "AMD"   ,
-        "outDir": "dist"     
-    }   
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "allowJs": true,
+    "outDir": "dist",
+    "types": ["jquery"]
+  },
+  "files": ["src/index.ts"],
+  "include": ["src"]
 }
