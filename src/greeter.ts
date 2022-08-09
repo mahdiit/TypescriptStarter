@@ -1,5 +1,6 @@
 import helloWorld from "./hello";
 import { pi, phi, absolute } from "./maths";
+import { RegexValidator } from "./Validators/RegexValidator"
 
 helloWorld();
 console.log(pi);
@@ -27,4 +28,4 @@ function greeter(person: Person) {
  
 let user = new Student("Jane", "M.", "User");
  
-document.body.textContent = greeter(user);
+document.getElementById("message").textContent = greeter(user);
