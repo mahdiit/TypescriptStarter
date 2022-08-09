@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "module": "AMD",
-        "allowSyntheticDefaultImports": true
+        "module": "AMD"        
     }   
 }
