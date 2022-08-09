@@ -8,6 +8,6 @@
     "outDir": "dist",
     "types": ["jquery"]
   },
-  "files": ["src/index.ts"],
+  "files": ["src/greeter.ts"],
   "include": ["src"]
 }
