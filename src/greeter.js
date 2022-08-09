@@ -1,4 +1,4 @@
-define(["require", "exports", "./hello", "./maths", "jquery"], function (require, exports, hello_1, maths_1, jquery_1) {
+define(["require", "exports", "./hello", "./maths", "./Validators/RegexValidator"], function (require, exports, hello_1, maths_1, RegexValidator_1) {
     "use strict";
     exports.__esModule = true;
     (0, hello_1["default"])();
@@ -18,7 +18,13 @@ define(["require", "exports", "./hello", "./maths", "jquery"], function (require
     }
     var user = new Student("Jane", "M.", "User");
     document.getElementById("message").textContent = greeter(user);
-    (0, jquery_1["default"])(function () {
-        alert('Loaded');
-    });
+    var btn = document.getElementById("btnTest");
+    btn.onclick = function () {
+        var inputText = document.getElementById("inputText");
+        var testText = document.getElementById("regexTest");
+        var ex = eval("/^" + testText.value + "$/");
+        console.log(ex);
+        var regex = new RegexValidator_1.RegexValidator(ex);
+        document.getElementById("result").textContent = regex.isAcceptable(inputText.value).toString();
+    };
 });

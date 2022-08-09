@@ -16,16 +16,25 @@ class Student {
     this.fullName = firstName + " " + middleInitial + " " + lastName;
   }
 }
- 
+
 interface Person {
   firstName: string;
   lastName: string;
 }
- 
+
 function greeter(person: Person) {
   return "Hello, " + person.firstName + " " + person.lastName;
 }
- 
+
 let user = new Student("Jane", "M.", "User");
- 
+
 document.getElementById("message").textContent = greeter(user);
+var btn = document.getElementById("btnTest") as HTMLButtonElement;
+btn.onclick = function () {
+  var inputText = document.getElementById("inputText") as HTMLInputElement;
+  var testText = document.getElementById("regexTest") as HTMLInputElement;
+  var ex = eval("/^" + testText.value + "$/");
+  console.log(ex);
+  var regex = new RegexValidator(ex);
+  document.getElementById("result").textContent = regex.isAcceptable(inputText.value).toString();
+};
