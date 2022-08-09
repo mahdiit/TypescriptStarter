@@ -1,6 +1,13 @@
+/// <reference types="jquery" />
+
 import helloWorld from "./hello";
 import { pi, phi, absolute } from "./maths";
 import { RegexValidator } from "./Validators/RegexValidator"
+import * as $ from "jquery"
+
+$(() => {
+  alert("Page Loaded");
+});
 
 helloWorld();
 console.log(pi);
@@ -40,4 +47,5 @@ btn.onclick = function () {
   var elResult = document.getElementById("result");
   elResult.textContent = testResult.toString();
   elResult.className = (testResult) ? "green" : "red";
+
 };
