@@ -46,6 +46,7 @@ btn.onclick = function () {
   var testResult = regex.isAcceptable(inputText.value);
   var elResult = document.getElementById("result");
   elResult.textContent = testResult.toString();
-  elResult.className = (testResult) ? "green" : "red";
+  //elResult.className = (testResult) ? "green" : "red";
 
+  $("#result").removeClass().addClass((testResult) ? "green" : "red")
 };
