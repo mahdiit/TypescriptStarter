@@ -36,5 +36,8 @@ btn.onclick = function () {
   var ex = eval("/^" + testText.value + "$/");
   console.log(ex);
   var regex = new RegexValidator(ex);
-  document.getElementById("result").textContent = regex.isAcceptable(inputText.value).toString();
+  var testResult = regex.isAcceptable(inputText.value);
+  var elResult = document.getElementById("result");
+  elResult.textContent = testResult.toString();
+  elResult.className = (testResult) ? "green" : "red";
 };
