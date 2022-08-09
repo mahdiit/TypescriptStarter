@@ -4,6 +4,7 @@ import helloWorld from "./hello";
 import { pi, phi, absolute } from "./maths";
 import { RegexValidator } from "./Validators/RegexValidator"
 import * as $ from "jquery"
+import { ExampleClass } from "./Decorators/MethodDecorator"
 
 $(() => {
   alert("Page Loaded");
@@ -48,5 +49,8 @@ btn.onclick = function () {
   elResult.textContent = testResult.toString();
   //elResult.className = (testResult) ? "green" : "red";
 
-  $("#result").removeClass().addClass((testResult) ? "green" : "red")
+  $("#result").removeClass().addClass((testResult) ? "green" : "red");
+
+  var cm = new ExampleClass();
+  cm.method();
 };

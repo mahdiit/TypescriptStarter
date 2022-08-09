@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
-        "module": "AMD"   ,
-        "outDir": "dist"     
-    }   
+        "target": "ES5",
+        "module": "AMD",
+        "outDir": "dist",
+        "experimentalDecorators": true
+    }
 }
