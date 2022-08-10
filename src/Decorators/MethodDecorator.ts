@@ -29,11 +29,28 @@ function catchError(target: any, propertyName: any, descriptor: any) {
     };
 }
 
+function log(value: string) {
+    return function (
+        target: any,
+        key: string,
+        descriptor: PropertyDescriptor): any {
+
+        const oldDescriptor = descriptor.value;
+
+        descriptor.value =async function(...args: any) {
+            console.log(`${value}, ${key}`);
+            console.table(args);
+            return await oldDescriptor.apply(target, args);
+        }
+    }
+}
+
 export class ExampleClass {
     //@first()
-    //@second()
+    //@second()    
     @catchError
-    method() {
+    @log("Sample config")    
+    method(index: number, param : string, isSuccess: boolean) {
         let rnd: Number;
         rnd = (new Date()).getTime() % 10;
         if (rnd < 5)
