@@ -6,8 +6,8 @@ import { RegexValidator } from "./Validators/RegexValidator"
 import * as $ from "jquery"
 import { ExampleClass } from "./Decorators/MethodDecorator"
 
-$(() => {
-  alert("Page Loaded");
+$(function(){
+  alert("Page Loaded");  
 });
 
 helloWorld();
