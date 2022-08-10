@@ -52,7 +52,7 @@ btn.onclick = function () {
   $("#result").removeClass().addClass((testResult) ? "green" : "red");
 
   var cm = new ExampleClass();
-  cm.method(0,"hello",true);
-  cm.method(1,"hello-2",false);
-  cm.method(2,"hello-3",false);
+  console.log(cm.method(0, "hello", true));
+  cm.method(1, "hello-2", false);
+  cm.method(2, "hello-3", false);
 };

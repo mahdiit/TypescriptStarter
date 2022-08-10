@@ -37,7 +37,7 @@ function log(value: string) {
 
         const oldDescriptor = descriptor.value;
 
-        descriptor.value =async function(...args: any) {
+        descriptor.value = async function (...args: any) {
             console.log(`${value}, ${key}`);
             console.table(args);
             return await oldDescriptor.apply(target, args);
@@ -45,17 +45,44 @@ function log(value: string) {
     }
 }
 
+function log2(prefix: string) {
+    return function (target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log(`${prefix} - ${propertyKey}`);
+    }
+}
+
+function memo() {
+    const cache: { [k: string]: any } = {};
+    return function (target: Object, propertyKey: string, descriptor: PropertyDescriptor) {
+        const originalMethod = descriptor.value;
+        descriptor.value = function (...args: any[]) {
+            const cacheKey = `__cacheKey__${args.toString()}`;
+            console.log(cacheKey);
+            if (!cache.hasOwnProperty(cacheKey)) {
+                cache[cacheKey] = originalMethod.apply(this, args);
+                console.log("cached! " + cacheKey);
+            }else{
+                console.log("from cache");
+            }
+            return cache[cacheKey];
+        }
+    }
+}
+
 export class ExampleClass {
     //@first()
     //@second()    
-    @catchError
-    @log("Sample config")    
-    method(index: number, param : string, isSuccess: boolean) {
+    //@catchError
+    //@log("Sample config")
+    @log2("sample prefix")
+    @memo()
+    method(index: number, param: string, isSuccess: boolean) {
         let rnd: Number;
         rnd = (new Date()).getTime() % 10;
-        if (rnd < 5)
-            throw new Error("there is error here");
-        else
-            console.log("Ok!");
+        return rnd;
+        //if (rnd < 5)
+            //throw new Error("there is error here");
+        //else
+            //console.log("Ok!");
     }
 }
