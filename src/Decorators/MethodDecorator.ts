@@ -23,8 +23,10 @@ function catchError(target: any, propertyName: any, descriptor: any) {
         try {
             return await method.apply(target, args);
         } catch (error) {
+            console.log("####### ERROR")
             console.log(`${target.constructor.name}#${propertyName}`);
-            console.log(`catched error: ${error.message}`);
+            console.table(args);
+            console.log(`catched error: ${error.message} ##########`);
         }
     };
 }
