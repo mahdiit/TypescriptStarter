@@ -1,8 +1,9 @@
 {
-    "compilerOptions": {
-        "target": "ES5",
+    "compilerOptions": {        
+        "target": "ES2022",
         "module": "AMD",
         "outDir": "dist",
-        "experimentalDecorators": true        
-    }    
+        "experimentalDecorators": true,
+        "moduleResolution": "node"        
+    }
 }

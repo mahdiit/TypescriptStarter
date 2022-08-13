@@ -5,9 +5,40 @@ import { pi, phi, absolute } from "./maths";
 import { RegexValidator } from "./Validators/RegexValidator"
 import * as $ from "jquery"
 import { ExampleClass } from "./Decorators/MethodDecorator"
+import * as myDb from "./indexdb"
 
-$(function(){
-  alert("Page Loaded");  
+$(async function () {
+  alert("Page Loaded");
+  let innerResult: string = "";
+
+  var clientDb = new myDb.AppDb();
+  var ids = await clientDb.GetContactList(0, 10);
+  innerResult = '<table border="1">';
+  await ids.forEach(element => {
+    innerResult += `<tr><td>${element.first}</td><td>${element.last}</td>
+    <td class="btnClick">${element.id}</td>
+    <td><button class="btnDelete">Delete</button></td>
+    <td><button class="btnViewEmail" data-id="${element.id}">Email</button></td>
+    <td><button class="btnViewPhone" data-id="${element.id}">Phone</button></td>
+    </tr>`;
+
+  });
+  innerResult += "</table>";
+  $("#gridHolder").html(innerResult);
+
+  $(".btnClick").on("click", function (event) {
+    alert($(this).html());
+  });
+  $(".btnViewEmail").on("click", async function (event) {
+    var id = Number.parseInt($(this).attr("data-id"));
+    var emails = await clientDb.GetEmails(id);
+    await emails.forEach(element => { alert(element.email) });
+  });
+  $(".btnViewPhone").on("click", async function (event) {
+    var id = Number.parseInt($(this).attr("data-id"));
+    var phones = await clientDb.GetPhoneNumbers(id);
+    await phones.forEach(element => { alert(element.phone) });
+  });
 });
 
 helloWorld();

@@ -28,6 +28,7 @@
     "cross-spawn": "^7.0.3",
     "debug": "^4.3.4",
     "deep-is": "^0.1.4",
+    "dexie": "^3.2.2",
     "dir-glob": "^3.0.1",
     "doctrine": "^3.0.0",
     "escape-string-regexp": "^4.0.0",
