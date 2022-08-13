@@ -16,7 +16,7 @@ $(async function () {
   innerResult = '<table border="1">';
   await ids.forEach(element => {
     innerResult += `<tr><td>${element.first}</td><td>${element.last}</td>
-    <td class="btnClick">${element.id}</td>
+    <td><button class="btnClick">${element.id}</button></td>
     <td><button class="btnDelete">Delete</button></td>
     <td><button class="btnViewEmail" data-id="${element.id}">Email</button></td>
     <td><button class="btnViewPhone" data-id="${element.id}">Phone</button></td>
