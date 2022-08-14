@@ -6,6 +6,7 @@ import { RegexValidator } from "./Validators/RegexValidator"
 import * as $ from "jquery"
 import { ExampleClass } from "./Decorators/MethodDecorator"
 import * as myDb from "./indexdb"
+import { Repository } from "./Repository";
 
 $(async function () {
   alert("Page Loaded");

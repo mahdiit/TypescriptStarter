@@ -1,4 +1,5 @@
 import Dexie from "dexie"
+import { Repository } from "./Repository";
 
 export interface IDbContact {
     id?: number; // Primary key. Optional (autoincremented)
@@ -21,9 +22,13 @@ export interface IDbPhoneNumber {
 }
 
 export class AppDb extends Dexie {
-    contacts!: Dexie.Table<IDbContact, number>;
-    emails!: Dexie.Table<IDbEmailAddress, number>;
-    phones!: Dexie.Table<IDbPhoneNumber, number>;
+    //contacts!: Dexie.Table<IDbContact, number>;
+    //emails!: Dexie.Table<IDbEmailAddress, number>;
+    //phones!: Dexie.Table<IDbPhoneNumber, number>;
+    _repo: Repository;
+    contacts: string = "contacts";
+    emails: string = "emails";
+    phones: string = "phones";
 
     constructor() {
         super("AppDb");
@@ -34,60 +39,74 @@ export class AppDb extends Dexie {
             phones: '++id, contactId, type, phone',
         });
         //this.on('populate', () => this.populate());
+        this._repo = new Repository(this);
     }
 
     async populate() {
-        var id = await this.contacts.add({ first: "Mahdi", last: "Yousefi" });
-        console.log(id);
+        //var id = await this.contacts.add({ first: "Mahdi", last: "Yousefi" });
+        //console.log(id);
     }
 
     async Add(contact: IDbContact, email: IDbEmailAddress, phone: IDbPhoneNumber) {
-        var id = await this.contacts.add(contact);
+        //var id = await this.contacts.add(contact);
+        let id = await this._repo.SetTable(this.contacts).Add<IDbContact, number>(contact);
         email.contactId = id;
-        await this.emails.add(email);
+        //await this.emails.add(email);
+        await this._repo.SetTable(this.emails).Add<IDbEmailAddress, number>(email);
         phone.contactId = id;
-        await this.phones.add(phone);
+        //await this.phones.add(phone);
+        await this._repo.SetTable(this.phones).Add<IDbPhoneNumber, number>(phone);
     }
 
-    GetContactList(pageIndex: number, pageSize: number) {
-        return this.contacts
-            .orderBy("id")
-            .reverse()
-            .offset(pageIndex * pageSize)
-            .limit(pageSize).toArray();
+    async GetContactList(pageIndex: number, pageSize: number) {
+        //return this.contacts
+        //  .orderBy("id")
+        //.reverse()
+        //.offset(pageIndex * pageSize)
+        //.limit(pageSize).toArray();
+        return await this._repo.SetTable(this.contacts).GetPaged<IDbContact>("id", pageIndex, pageSize);
     }
-    async GetContactListCount(){
-        return await this.contacts.count();
-    }
-
-    GetPhoneNumbers(contactId: number){
-        return this.phones.filter((e)=> { return e.contactId == contactId }).toArray();
+    async GetContactListCount(): Promise<number> {
+        //return await this.contacts.count();
+        return await this._repo.SetTable(this.contacts).Count();
     }
 
-    async AddPhoneNumber(phone: IDbPhoneNumber, ){
-        await this.phones.add(phone);
+    async GetPhoneNumbers(contactId: number) {
+        //return this.phones.filter((e) => { return e.contactId == contactId }).toArray();
+        return this._repo
+            .SetTable(this.phones)
+            .SetFilter<IDbPhoneNumber>((e) => { return e.contactId == contactId })
+            .GetFilterResult<IDbPhoneNumber>();
     }
 
-    async RemovePhoneNumber(id: number){
-        await this.phones.delete(id);
+    async AddPhoneNumber(phone: IDbPhoneNumber) {
+        await this._repo.SetTable(this.phones).Add<IDbPhoneNumber, number>(phone);
     }
 
-    GetEmails(contactId: number){
-        return this.emails.filter((e)=> { return e.contactId == contactId }).toArray();
+    async RemovePhoneNumber(id: number) {
+        //await this.phones.delete(id);
     }
 
-    async AddEmail(email: IDbEmailAddress, ){
-        await this.emails.add(email);
+    GetEmails(contactId: number) {
+        //return this.emails.filter((e) => { return e.contactId == contactId }).toArray();
+        return this._repo
+            .SetTable(this.emails)
+            .SetFilter<IDbEmailAddress>((e) => { return e.contactId == contactId })
+            .GetFilterResult<IDbEmailAddress>();
     }
 
-    async RemoveEmail(id: number){
-        await this.emails.delete(id);
+    async AddEmail(email: IDbEmailAddress,) {
+        //await this.emails.add(email);
+    }
+
+    async RemoveEmail(id: number) {
+        //await this.emails.delete(id);
     }
 }
 
 export async function dbWork() {
     //var db = new AppDb();
     //await db.Add({ first: "Mahdi", last: "Yousefi" }
-        //, { email: "mahdi.usefi@gmail.com", type: "home", contactId: 0 }
-        //, { phone: "09203172059", type: "home", contactId: 0 });
+    //, { email: "mahdi.usefi@gmail.com", type: "home", contactId: 0 }
+    //, { phone: "09203172059", type: "home", contactId: 0 });
 }
