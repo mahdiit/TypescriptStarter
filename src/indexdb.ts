@@ -25,10 +25,10 @@ export class AppDb extends Dexie {
     //contacts!: Dexie.Table<IDbContact, number>;
     //emails!: Dexie.Table<IDbEmailAddress, number>;
     //phones!: Dexie.Table<IDbPhoneNumber, number>;
-    _repo: Repository;
-    contacts: string = "contacts";
-    emails: string = "emails";
-    phones: string = "phones";
+    //_repo: Repository;
+    contactRepo: Repository<IDbContact, number>;
+    emailRepo: Repository<IDbEmailAddress, number>;
+    phoneRepo: Repository<IDbPhoneNumber, number>;
 
     constructor() {
         super("AppDb");
@@ -39,7 +39,10 @@ export class AppDb extends Dexie {
             phones: '++id, contactId, type, phone',
         });
         //this.on('populate', () => this.populate());
-        this._repo = new Repository(this);
+        //this._repo = new Repository(this);
+        this.contactRepo = new Repository<IDbContact, number>(this,"contacts");
+        this.emailRepo = new Repository<IDbEmailAddress, number>(this,"emails");
+        this.phoneRepo = new Repository<IDbPhoneNumber, number>(this, "phones");
     }
 
     async populate() {
@@ -49,13 +52,13 @@ export class AppDb extends Dexie {
 
     async Add(contact: IDbContact, email: IDbEmailAddress, phone: IDbPhoneNumber) {
         //var id = await this.contacts.add(contact);
-        let id = await this._repo.SetTable(this.contacts).Add<IDbContact, number>(contact);
+        let id = await this.contactRepo.Add(contact);
         email.contactId = id;
         //await this.emails.add(email);
-        await this._repo.SetTable(this.emails).Add<IDbEmailAddress, number>(email);
+        await this.emailRepo.Add(email);
         phone.contactId = id;
         //await this.phones.add(phone);
-        await this._repo.SetTable(this.phones).Add<IDbPhoneNumber, number>(phone);
+        await this.phoneRepo.Add(phone);
     }
 
     async GetContactList(pageIndex: number, pageSize: number) {
@@ -64,35 +67,33 @@ export class AppDb extends Dexie {
         //.reverse()
         //.offset(pageIndex * pageSize)
         //.limit(pageSize).toArray();
-        return await this._repo.SetTable(this.contacts).GetPaged<IDbContact>("id", pageIndex, pageSize);
+        return await this.contactRepo.GetPaged("id", pageIndex, pageSize);
     }
     async GetContactListCount(): Promise<number> {
         //return await this.contacts.count();
-        return await this._repo.SetTable(this.contacts).Count();
+        return await this.contactRepo.Count();
     }
 
     async GetPhoneNumbers(contactId: number) {
         //return this.phones.filter((e) => { return e.contactId == contactId }).toArray();
-        return this._repo
-            .SetTable(this.phones)
-            .SetFilter<IDbPhoneNumber>((e) => { return e.contactId == contactId })
-            .GetFilterResult<IDbPhoneNumber>();
+        return await this.phoneRepo
+            .SetFilter((e) => { return e.contactId == contactId })
+            .GetFilterResult();
     }
 
     async AddPhoneNumber(phone: IDbPhoneNumber) {
-        await this._repo.SetTable(this.phones).Add<IDbPhoneNumber, number>(phone);
+        await this.phoneRepo.Add(phone);
     }
 
     async RemovePhoneNumber(id: number) {
         //await this.phones.delete(id);
     }
 
-    GetEmails(contactId: number) {
+    async GetEmails(contactId: number) {
         //return this.emails.filter((e) => { return e.contactId == contactId }).toArray();
-        return this._repo
-            .SetTable(this.emails)
-            .SetFilter<IDbEmailAddress>((e) => { return e.contactId == contactId })
-            .GetFilterResult<IDbEmailAddress>();
+        return await this.emailRepo
+            .SetFilter((e) => { return e.contactId == contactId })
+            .GetFilterResult();
     }
 
     async AddEmail(email: IDbEmailAddress,) {

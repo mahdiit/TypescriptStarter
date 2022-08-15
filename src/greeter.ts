@@ -8,8 +8,37 @@ import { ExampleClass } from "./Decorators/MethodDecorator"
 import * as myDb from "./indexdb"
 import { Repository } from "./Repository";
 
+import { Entity } from "sample-repository-pattern"
+
+class PersonInfo implements Entity<number>{
+  id: number;
+
+  private _firstName: string;
+  public get firstName(): string {
+    return this._firstName;
+  }
+  public set firstName(v: string) {
+    this._firstName = v;
+  }
+
+
+  private _lastName: string;
+  public get lastName(): string {
+    return this._lastName;
+  }
+  public set lastName(v: string) {
+    this._lastName = v;
+  }
+
+
+}
+
 $(async function () {
   alert("Page Loaded");
+  let p = new PersonInfo();
+  p.firstName = "Mahdi";
+  p.lastName = "Yousefi";
+
   let innerResult: string = "";
 
   var clientDb = new myDb.AppDb();
