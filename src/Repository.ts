@@ -18,9 +18,9 @@ export interface IRepository<IEntity, Key> {
 }
 
 export class Repository<IEntity, Key> implements IRepository<IEntity, Key> {
-    _Dexie: Dexie;
-    _tableName: string;
-    _filter: any;
+    private _Dexie: Dexie;
+    private _tableName: string;
+    private _filter: any;
 
     constructor(dexie: Dexie, tableName: string) {
         this._Dexie = dexie;

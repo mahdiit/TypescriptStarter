@@ -1,20 +1,39 @@
 import Dexie from "dexie"
 import { Repository } from "./Repository";
 
-export interface IDbContact {
+export function Fields<T>() {
+    return new Proxy(
+        {},
+        {
+            get: function (_target, prop, _receiver) {                                
+                return prop;
+            },
+        }
+    ) as {
+            [P in keyof T]: P;
+        };
+};
+
+class DbEntity {
+    public GetFields(): any {
+        return Fields<this>();
+    }
+}
+
+export class IDbContact extends DbEntity {
     id?: number; // Primary key. Optional (autoincremented)
     first: string; // First name
     last: string; // Last name
 }
 
-export interface IDbEmailAddress {
+export class IDbEmailAddress {
     id?: number;
     contactId: number; // "Foreign key" to an IContact
     type: string; // Type of email such as "work", "home" etc...
     email: string; // The email address
 }
 
-export interface IDbPhoneNumber {
+export class IDbPhoneNumber {
     id?: number;
     contactId: number;
     type: string;
@@ -36,8 +55,8 @@ export class AppDb extends Dexie {
             phones: '++id, contactId, type, phone',
         });
 
-        this.Contact = new Repository<IDbContact, number>(this,"contacts");
-        this.Email = new Repository<IDbEmailAddress, number>(this,"emails");
+        this.Contact = new Repository<IDbContact, number>(this, "contacts");
+        this.Email = new Repository<IDbEmailAddress, number>(this, "emails");
         this.Phone = new Repository<IDbPhoneNumber, number>(this, "phones");
     }
 }

@@ -11,9 +11,11 @@ $(async function () {
   alert("Page Loaded");
 
   let innerResult: string = "";
-
-  var clientDb = new myDb.AppDb();
-  var contactsData = await clientDb.Contact.GetAll(); 
+  //var clientDb = new myDb.AppDb();  
+  var contact = new myDb.IDbContact();
+  var f = contact.GetFields();
+  console.log(f.GetFields);
+  console.log(f.last);
   //grid.render($("#gridHolder").get(0));
 });
 
