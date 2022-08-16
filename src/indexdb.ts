@@ -1,24 +1,5 @@
 import Dexie from "dexie"
-import { Repository } from "./Repository";
-
-export function Fields<T>() {
-    return new Proxy(
-        {},
-        {
-            get: function (_target, prop, _receiver) {                                
-                return prop;
-            },
-        }
-    ) as {
-            [P in keyof T]: P;
-        };
-};
-
-class DbEntity {
-    public GetFields(): any {
-        return Fields<this>();
-    }
-}
+import { DbEntity, Repository } from "sample-repository-pattern"
 
 export class IDbContact extends DbEntity {
     id?: number; // Primary key. Optional (autoincremented)

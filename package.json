@@ -97,7 +97,7 @@
     "reusify": "^1.0.4",
     "rimraf": "^3.0.2",
     "run-parallel": "^1.2.0",
-    "sample-repository-pattern": "^0.0.1",
+    "sample-repository-pattern": "^0.0.8",
     "shebang-command": "^2.0.0",
     "shebang-regex": "^3.0.0",
     "slash": "^3.0.0",

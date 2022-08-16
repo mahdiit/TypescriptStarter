@@ -11,7 +11,9 @@ $(async function () {
   alert("Page Loaded");
 
   let innerResult: string = "";
-  //var clientDb = new myDb.AppDb();  
+  var clientDb = new myDb.AppDb();  
+  var allContact = await clientDb.Contact.GetAll();
+
   var contact = new myDb.IDbContact();
   var f = contact.GetFields();
   console.log(f.GetFields);
